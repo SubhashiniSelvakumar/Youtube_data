@@ -16,9 +16,6 @@ The task is to build a Streamlit app that permits users to analyze data from mul
 
 **Approach**
 
-
-Explain the high-level approach or steps you took to solve the problem or build the project. You can use numbered or bulleted lists for this section.
-
 1. Set up a Streamlit app:
    - Streamlit is a great choice for building data visualization and analysis tools quickly and easily. You can use Streamlit to create a simple UI where users can enter a YouTube channel ID, view the channel details, and select channels to migrate to the data warehouse.
 
