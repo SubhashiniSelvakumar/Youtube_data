@@ -7,8 +7,11 @@ The task is to build a Streamlit app that permits users to analyze data from mul
 **Technology used**
 
 1.Python
+
 2.MySQL
+
 3.MongoDB
+
 4.Google Client Library
 
 **Approach**
