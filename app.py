@@ -211,9 +211,8 @@ def channel_names():
 if selected == "Home":
 
 # Modify the styling of your app
-  st.markdown("<p style='font-size:36px; font-weight:bold; color:800080;'>YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
-
-  st.markdown("<p style='font-size:30px; font-weight:bold; color:f0e5e5;'>Technologies: Python, MongoDB, YouTube Data API, MySQL, Streamlit</p>", unsafe_allow_html=True)
+  st.markdown("<p style='font-size:36px; font-weight:bold; color:white;'> YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
+  st.markdown("<p style='font-size:30px; font-weight:bold; color:orange;'>Technologies:<br><span style='color:white;'>Python, MongoDB, YouTube Data API, MySQL, Streamlit</span></p>", unsafe_allow_html=True)
 # Display a small overview in your Streamlit app
   st.markdown("""
   ## Project Overview
