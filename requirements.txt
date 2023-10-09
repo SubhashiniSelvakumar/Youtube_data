@@ -1,4 +1,8 @@
-apiclient
-google-api-python-client
-pymongo
+pandas
+plotly
 streamlit
+streamlit-option-menu
+mysql-connector-python
+pymongo
+google-api-python-client
+Pillow
