@@ -23,7 +23,7 @@ with st.sidebar:
 custom_css = """
 <style>
 body {font-family: Arial, sans-serif;
-    background-color: #FFFEO;}h1 {color: #1e60a7;}h2 {color: #1e60a7;} h3 {color: #1e60a7;}
+    background-color: #FFFFE0;}h1 {color: #1e60a7;}h2 {color: #1e60a7;} h3 {color: #1e60a7;}
 .sidebar .stSelectbox-label {
     font-size: 16px;
     color: #1e60a7 !important;
@@ -211,14 +211,15 @@ def channel_names():
 if selected == "Home":
 
 # Modify the styling of your app
-  st.markdown("<p style='font-size:36px; font-weight:bold; color:white;'>YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
+  st.markdown("<p style='font-size:36px; font-weight:bold; color:800080;'>YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
 
-  st.markdown("<p style='font-size:30px; font-weight:bold; color:pink;'>## Technologies: Python, MongoDB, YouTube Data API, MySQL, Streamlit</p>", unsafe_allow_html=True)
+  st.markdown("<p style='font-size:30px; font-weight:bold; color:f0e5e5;'>Technologies: Python, MongoDB, YouTube Data API, MySQL, Streamlit</p>", unsafe_allow_html=True)
 # Display a small overview in your Streamlit app
   st.markdown("""
   ## Project Overview
   This project is focused on retrieving and analyzing YouTube channel data using various technologies. It involves the following key steps:
 
+              
 1. **Data Retrieval:** We fetch valuable information from YouTube channels using the YouTube Data API.
 
 2. **Data Storage:** The collected data is stored in a MongoDB database, serving as a data lake.
@@ -237,8 +238,18 @@ This pipeline enables data-driven decisions and insights for YouTube content cre
     
 # EXTRACT and TRANSFORM PAGE
 if selected == "Extract and Transform":
-    tab1,tab2 = st.tabs(["$\huge EXTRACT $", "$\huge TRANSFORM $"])
-    
+    tab1,tab2 = st.tabs(["EXTRACT", "TRANSFORM"])
+    st.markdown(
+        """
+        <style>
+        .stTabs .stTab {
+            font-size: 100px !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     # EXTRACT TAB
     with tab1:
         st.markdown("#    ")
