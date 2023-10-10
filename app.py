@@ -15,11 +15,8 @@ st.set_page_config(page_title= "Youtube Data Harvesting and Warehousing ",
                    layout= "wide",
                    initial_sidebar_state= "expanded",
                    menu_items={'About': """# This app is created by Subhashini"""})
- # CREATING OPTION MENU
-with st.sidebar:
-    selected = st.selectbox("Menu", ["Home", "Extract and Transform", "View"])
 
-# Define CSS for custom styling
+# CSS for custom styling
 custom_css = """
 <style>
 body {font-family: Arial, sans-serif;
@@ -30,10 +27,9 @@ body {font-family: Arial, sans-serif;
 }
 </style>
 """
-# Add custom CSS
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# Bridging a connection with MongoDB Atlas and Creating a new database(youtube_data)
+# Mongo Db Connection
 client = pymongo.MongoClient("mongodb+srv://subhashini:briyani@cluster0.neuug1f.mongodb.net/?retryWrites=true&w=majority")
 db = client['youtube_data']
 
@@ -47,10 +43,9 @@ mydb = mysql.connector.connect(
 print(mydb)
 mycursor = mydb.cursor(buffered=True)
 
-# Drop the 'channels' table if it exists
 mycursor.execute("DROP TABLE IF EXISTS channels")
 
-# Create the 'channels' table
+# Create table
 mycursor.execute("""
     CREATE TABLE channels (
         Channel_id VARCHAR(50) PRIMARY KEY,
@@ -87,12 +82,12 @@ mycursor.execute(create_table_query)
 mycursor.execute(create_comments_table_query)
 mydb.commit()
 
-# BUILDING CONNECTION WITH YOUTUBE API
+# CONNECTION WITH YOUTUBE API
 api_key = "AIzaSyCxqtUdj8hQ_jSMi4X81cduw-iSXbyGttw"
 youtube = build('youtube','v3',developerKey=api_key)
 
 
-# FUNCTION TO GET CHANNEL DETAILS
+# FUNCTION TO GET CHANNEL ID
 def get_channel_details(channel_id):
     ch_data = []
     response = youtube.channels().list(
@@ -100,9 +95,8 @@ def get_channel_details(channel_id):
         id=channel_id
     ).execute()
 
-    # Check if 'items' key is present in the response
     if 'items' in response:
-        item = response['items'][0]  # Assuming only one item is returned
+        item = response['items'][0]
         data = {
             'Channel_id': channel_id,
             'Channel_name': item['snippet']['title'],
@@ -121,7 +115,6 @@ def get_channel_details(channel_id):
 # FUNCTION TO GET VIDEO IDS
 def get_channel_videos(channel_id):
     video_ids = []
-    # get Uploads playlist id
     res = youtube.channels().list(id=channel_id, 
                                   part='contentDetails').execute()
     playlist_id = res['items'][0]['contentDetails']['relatedPlaylists']['uploads']
@@ -206,44 +199,29 @@ def channel_names():
         ch_name.append(i['Channel_name'])
     return ch_name
 
+selected = st.sidebar.selectbox("Menu", ["Home", "Extract", "Transform", "View"])
 
-# HOME PAGE
+# Home page
 if selected == "Home":
+    st.markdown("<p style='font-size:36px; font-weight:bold; color:white;'> YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:30px; font-weight:bold; color:orange;'>Technologies:<br><span style='color:white;'>Python, MongoDB, YouTube Data API, MySQL, Streamlit</span></p>", unsafe_allow_html=True)
+    
+    st.markdown("""
+    ## Project Overview
+    This project is focused on retrieving and analyzing YouTube channel data using various technologies. It involves the following key steps:
+    1. **Data Retrieval:** We fetch valuable information from YouTube channels using the YouTube Data API.
+    2. **Data Storage:** The collected data is stored in a MongoDB database, serving as a data lake.
+    3. **Data Transformation:** We transform and structure the data for efficient analysis.
+    4. **SQL Database:** Data is migrated to a MySQL database for structured storage.
+    5. **Data Analysis:** SQL queries provide insights on video views, likes, comments, and more.
+    6. **Streamlit App:** An interactive Streamlit app visualizes the analyzed data for easy exploration.
+    
+    This pipeline enables data-driven decisions and insights for YouTube content creators and analysts.
+    """)
 
-# Modify the styling of your app
-  st.markdown("<p style='font-size:36px; font-weight:bold; color:white;'> YOUTUBE DATA HARVESTING AND WAREHOUSING</p>", unsafe_allow_html=True)
-  st.markdown("<p style='font-size:30px; font-weight:bold; color:orange;'>Technologies:<br><span style='color:white;'>Python, MongoDB, YouTube Data API, MySQL, Streamlit</span></p>", unsafe_allow_html=True)
-
-# Display a small overview in your Streamlit app
-  st.markdown("""
-  ## Project Overview
-  This project is focused on retrieving and analyzing YouTube channel data using various technologies. It involves the following key steps:
-
-              
-1. **Data Retrieval:** We fetch valuable information from YouTube channels using the YouTube Data API.
-
-2. **Data Storage:** The collected data is stored in a MongoDB database, serving as a data lake.
-
-3. **Data Transformation:** We transform and structure the data for efficient analysis.
-
-4. **SQL Database:** Data is migrated to a MySQL database for structured storage.
-
-5. **Data Analysis:** SQL queries provide insights on video views, likes, comments, and more.
-
-6. **Streamlit App:** An interactive Streamlit app visualizes the analyzed data for easy exploration.
-
-This pipeline enables data-driven decisions and insights for YouTube content creators and analysts.
-
-""")    
-
-
-# Create a selection menu for "Extract" and "Transform"
-selected = st.selectbox("Menu", ["Extract", "Transform"])
-
-# Display content based on the selected option
-if selected == "Extract":
+# Extract page
+elif selected == "Extract":
     st.markdown("<p style='font-size:30px; font-weight:bold; color:orange;'>EXTRACT</p>", unsafe_allow_html=True)
-    # EXTRACT TAB
     st.markdown("#    ")
     st.write("### Enter YouTube Channel_ID below:")
     ch_id = st.text_input("Hint: Go to the channel's home page > Right click > View page source > Find channel_id").split(',')
@@ -278,10 +256,10 @@ if selected == "Extract":
             collections3.insert_many(comm_details)
             st.success("Upload to MongoDB successful !!")
 
+# Transform page
 elif selected == "Transform":
     st.markdown("<p style='font-size:30px; font-weight:bold; color:orange;'>TRANSFORM</p>", unsafe_allow_html=True)
     
-# TRANSFORM TAB    
     st.markdown("#   ")
     st.markdown("### Select a channel to begin Transformation to SQL")
     
@@ -333,9 +311,8 @@ elif selected == "Transform":
         except:
             st.error("Channel details already transformed!!")
 
-# VIEW PAGE
-if selected == "View":
-    
+# View page
+elif selected == "View":
     st.write("## :orange[Select any question to get Insights]")
     questions = st.selectbox('Questions',
     ['Click the question that you would like to query',
